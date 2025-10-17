@@ -3,6 +3,7 @@
 # =========================
 # Load packages
 # =========================
+require(optparse)
 require(mlr3)
 require(mlr3learners)
 require(sandwich)
@@ -530,89 +531,56 @@ plot_sates_png <- function(m_obj,
 # =========================
 # CLI main
 # =========================
-args <- commandArgs(trailingOnly = TRUE)
+suppressMessages(library(optparse))
 
-# Parse flag-based arguments
-parse_args <- function(args) {
-  params <- list(
-    outcome = NULL,
-    treatment = NULL,
-    prs = NULL,
-    num_folds = NULL,
-    seed = NULL,
-    prop_learner = NULL,
-    base_learners = NULL,
-    quantile_cutoffs = NULL,
-    significance_level = NULL,
-    plot_file = NULL,
-    fis_file = NULL
-  )
+options(stringsAsFactors = FALSE)
 
-  i <- 1
-  while (i <= length(args)) {
-    arg <- args[i]
-    if (arg == "--outcome") {
-      params$outcome <- args[i + 1]
-      i <- i + 2
-    } else if (arg == "--treatment") {
-      params$treatment <- args[i + 1]
-      i <- i + 2
-    } else if (arg == "--prs") {
-      params$prs <- args[i + 1]
-      i <- i + 2
-    } else if (arg == "--num_folds") {
-      params$num_folds <- as.integer(args[i + 1])
-      i <- i + 2
-    } else if (arg == "--seed") {
-      params$seed <- as.integer(args[i + 1])
-      i <- i + 2
-    } else if (arg == "--prop_learner") {
-      params$prop_learner <- args[i + 1]
-      i <- i + 2
-    } else if (arg == "--base_learners") {
-      params$base_learners <- strsplit(args[i + 1], ",")[[1]]
-      i <- i + 2
-    } else if (arg == "--quantile_cutoffs") {
-      params$quantile_cutoffs <- as.numeric(strsplit(args[i + 1], ",")[[1]])
-      i <- i + 2
-    } else if (arg == "--significance_level") {
-      params$significance_level <- as.numeric(args[i + 1])
-      i <- i + 2
-    } else if (arg == "--plot_file") {
-      params$plot_file <- args[i + 1]
-      i <- i + 2
-    } else if (arg == "--fis_file") {
-      params$fis_file <- args[i + 1]
-      i <- i + 2
-    } else {
-      i <- i + 1
-    }
-  }
+option_list <- list(
+  make_option("--outcome", action = "store", default = NA, type = "character",
+              help = "Outcome file path (e.g., Y.txt)"),
+  make_option("--treatment", action = "store", default = NA, type = "character",
+              help = "Treatment indicator file path (e.g., D.txt)"),
+  make_option("--prs", action = "store", default = NA, type = "character",
+              help = "PRS/covariates file path (e.g., Z.txt)"),
+  make_option("--num_folds", action = "store", default = NA, type = "integer",
+              help = "Number of folds for cross-fitting"),
+  make_option("--seed", action = "store", default = NA, type = "integer",
+              help = "Random seed for reproducibility"),
+  make_option("--prop_learner", action = "store", default = NA, type = "character",
+              help = "Propensity score learner: constant, lasso, random_forest, tree, svm, or logit"),
+  make_option("--base_learners", action = "store", default = NA, type = "character",
+              help = "CATE learner(s), comma-separated (e.g., svm or svm,ranger)"),
+  make_option("--quantile_cutoffs", action = "store", default = NA, type = "character",
+              help = "Subgroup cutoffs, comma-separated decimals (e.g., 0.3333,0.6667)"),
+  make_option("--significance_level", action = "store", default = NA, type = "double",
+              help = "Significance level for confidence intervals (e.g., 0.05)"),
+  make_option("--plot_file", action = "store", default = NULL, type = "character",
+              help = "Output path for subgroup treatment effect plot (PNG format)"),
+  make_option("--fis_file", action = "store", default = NULL, type = "character",
+              help = "Output path for Feature Importance Scores (text file)")
+)
 
-  # Check required arguments
-  required <- c("outcome", "treatment", "prs", "num_folds", "seed",
-                "prop_learner", "base_learners", "quantile_cutoffs", "significance_level")
-  missing <- required[sapply(params[required], is.null)]
-  if (length(missing) > 0) {
-    stop("Missing required arguments: ", paste0("--", missing, collapse = " "))
-  }
+opt <- parse_args(OptionParser(option_list = option_list))
 
-  params
+# Check required arguments
+required <- c("outcome", "treatment", "prs", "num_folds", "seed",
+              "prop_learner", "base_learners", "quantile_cutoffs", "significance_level")
+missing <- required[sapply(opt[required], is.na)]
+if (length(missing) > 0) {
+  stop("Missing required arguments: ", paste0("--", missing, collapse = " "))
 }
 
-params <- parse_args(args)
-
-Y_file        <- params$outcome
-D_file        <- params$treatment
-Z_file        <- params$prs
-num_folds     <- params$num_folds
-seed          <- params$seed
-prop_learner  <- params$prop_learner
-base_learners <- params$base_learners
-quantiles     <- params$quantile_cutoffs
-alpha         <- params$significance_level
-plot_file     <- params$plot_file
-fis_file      <- params$fis_file
+Y_file        <- opt$outcome
+D_file        <- opt$treatment
+Z_file        <- opt$prs
+num_folds     <- opt$num_folds
+seed          <- opt$seed
+prop_learner  <- opt$prop_learner
+base_learners <- strsplit(opt$base_learners, ",")[[1]]
+quantiles     <- as.numeric(strsplit(opt$quantile_cutoffs, ",")[[1]])
+alpha         <- opt$significance_level
+plot_file     <- opt$plot_file
+fis_file      <- opt$fis_file
 
 # ---- Load data ----
 Y <- as.matrix(fread(Y_file))
