@@ -13,22 +13,6 @@ require(data.table)
 
 
 # =========================
-# IO helpers using fread for fast & robust reading
-# =========================
-read_Y <- function(path) {
-  dt <- data.table::fread(path, header = TRUE, data.table = FALSE)
-  as.numeric(as.matrix(dt))
-}
-read_D <- function(path) {
-  dt <- data.table::fread(path, header = TRUE, data.table = FALSE)
-  as.numeric(as.matrix(dt))
-}
-read_Z <- function(path) {
-  dt <- data.table::fread(path, header = TRUE, check.names = TRUE, data.table = FALSE)
-  as.matrix(dt)
-}
-
-# =========================
 #  Propensity score
 # =========================
 # learner ∈ {"constant","lasso","random_forest","tree","svm","logit"}
@@ -631,9 +615,9 @@ plot_file     <- params$plot_file
 fis_file      <- params$fis_file
 
 # ---- Load data ----
-Y <- read_Y(Y_file)
-D <- read_D(D_file)
-Z <- read_Z(Z_file)
+Y <- as.matrix(fread(Y_file))
+D <- as.matrix(fread(D_file))
+Z <- as.matrix(fread(Z_file))
 
 # ---- Run M-learner ----
 res <- M_learner(
