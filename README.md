@@ -6,8 +6,6 @@
 
 M-Learner is a AI/ML framework for detecting and interpreting genetically-driven **heterogeneous treatment effects (HTE)** in randomized controlled trials (RCTs). It introduces the concept of **polygenic efficacy**, defined by the aggregate contribution of genome-wide genetic variants to treatment response.
 
-**Manuscript**: https://jiachengmiao.com/paper/M_Learner.pdf
-
 ## 🚀 Quick Start
 
 > **⚠️ Prerequisites**: Complete the [installation & setup](#️-installation--setup) below before running M-Learner.
