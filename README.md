@@ -123,7 +123,7 @@ CSV files saved:
    * Medium PES group: ATE = 1.16 (95% CB: 0.51–1.81, P = 4.7×10⁻⁴)
    * High PES group: ATE = 2.20 (95% CB: 1.57–2.83, P = 7.9×10⁻¹²)
 
-Treatment efficacy is consistently positive in every group, but the magnitude is markedly higher in the genetically enriched subgroup. This provides evidence that the PES can stratify patients by expected treatment benefit and potentially guide more personalized therapeutic decisions.
+Treatment efficacy is consistently positive in every group, but the magnitude is larger in high PES group. This provides evidence that the PES can stratify patients by expected treatment benefit and potentially guide more personalized therapeutic decisions.
 
 ## 📚 Reference
 If you use ``M-Learner``, please cite
