@@ -4,7 +4,7 @@
 
 # 🧬 Polygenic prediction of treatment efficacy
 
-M-Learner is a AI/ML framework for detecting and interpreting genetically-driven **heterogeneous treatment effects (HTE)** in randomized controlled trials (RCTs). 
+``M-Learner`` is a AI/ML framework for detecting and interpreting genetically-driven **heterogeneous treatment effects (HTE)** in randomized controlled trials (RCTs). 
 
 It introduces the concept of **polygenic efficacy**, defined by the aggregate contribution of genome-wide genetic variants to treatment response.
 
@@ -98,3 +98,6 @@ Rscript M_Learner_I.R \
 - **Console output** — Prints tables (including estimate, confidence interval and p value) for estimated PES-by-treatment interaction effect and average treatment effect in each subgroup
 
 ## 📚 Reference
+If you use ``M-Learner``, please cite
+
+Miao, J., Mu, J., Yang, X., Fletcher, J., Schmitz, L. L., & Lu, Q. (2025). Polygenic prediction of treatment efficacy with causal transfer learning. medRxiv, 2025-10
