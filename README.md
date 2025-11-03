@@ -115,7 +115,7 @@ CSV files saved:
  - /tmp/ATE_in_each_group.csv
  - /tmp/feature_importance.csv
 ```
-### Interpretation for the results above
+### Interpretation
 * We observed a significant polygenic efficacy score by treatment (PES×T) interaction (beta = 0.86, 95% CB: 0.22–1.50, P = 8.7×10⁻³), indicating that genetic variation captured by PES meaningfully modifies treatment response. Individuals with higher PES values show greater benefit from treatment.
 
 * Subgroup analyses further support this pattern. The average treatment effect (ATE) increases across PES-defined strata:
