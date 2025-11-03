@@ -99,5 +99,13 @@ Rscript M_Learner_I.R \
 
 ## 📚 Reference
 If you use ``M-Learner``, please cite
-
-Miao, J., Mu, J., Yang, X., Fletcher, J., Schmitz, L. L., & Lu, Q. (2025). Polygenic prediction of treatment efficacy with causal transfer learning. medRxiv, 2025-10
+```
+@article{miao2025polygenic,
+  title={Polygenic prediction of treatment efficacy with causal transfer learning},
+  author={Miao, Jiacheng and Mu, Jin and Yang, Xiaoyu and Fletcher, Jason and Schmitz, Lauren L and Lu, Qiongshi},
+  journal={medRxiv},
+  pages={2025--10},
+  year={2025},
+  publisher={Cold Spring Harbor Laboratory Press}
+}
+```
