@@ -371,12 +371,12 @@ initializer.for.splits <- function(Z, num_folds, quantile_cutoffs){
 # =========================
 for.output <- function(result, significance_level = 0.05){
   folds <- dim(result$BLP)[3]
-  blp <- matrix(NA_real_, 2, 4, dimnames=list(c("beta.1","beta.2"), c("Estimate","CB lower","CB upper","P value")))
+  blp <- matrix(NA_real_, 1, 4, dimnames=list("beta.2", c("Estimate","CB lower","CB upper","P value")))
   sat <- matrix(NA_real_, dim(result$SATES)[1], 4, dimnames=list(rownames(result$SATES), c("Estimate","CB lower","CB upper","P value")))
 
   # BLP
-  blp[, "Estimate"]  <- apply(result$BLP[,"Estimate",], 1, mean, na.rm = TRUE)
-  zsum               <- apply(result$BLP[,"z value",], 1, function(x) sum(x, na.rm = TRUE)) / sqrt(folds)
+  blp[, "Estimate"]  <- mean(result$BLP["beta.2","Estimate",], na.rm = TRUE)
+  zsum               <- sum(result$BLP["beta.2","z value",], na.rm = TRUE) / sqrt(folds)
   blp[, "P value"]   <- 2*pnorm(-abs(zsum))
   z                  <- stats::qnorm(1 - significance_level/2)
   se_hat             <- abs(blp[, "Estimate"]) / pmax(abs(zsum), 1e-12)
@@ -557,7 +557,9 @@ option_list <- list(
   make_option("--plot_file", action = "store", default = NULL, type = "character",
               help = "Output path for subgroup treatment effect plot (PNG format)"),
   make_option("--fis_file", action = "store", default = NULL, type = "character",
-              help = "Output path for Feature Importance Scores (text file)")
+              help = "Output path for Feature Importance Scores (text file)"),
+  make_option("--output_path", action = "store", default = NULL, type = "character",
+            help = "output_path for saving CSV outputs: PESxT.csv, ATE_in_each_group.csv, feature_importance.csv")
 )
 
 opt <- parse_args(OptionParser(option_list = option_list))
@@ -581,6 +583,7 @@ quantiles     <- as.numeric(strsplit(opt$quantile_cutoffs, ",")[[1]])
 alpha         <- opt$significance_level
 plot_file     <- opt$plot_file
 fis_file      <- opt$fis_file
+output_path   <- opt$output_path
 
 # ---- Load data ----
 Y <- as.matrix(fread(Y_file))
@@ -599,10 +602,10 @@ res <- M_learner(
 )
 
 # ---- Print results ----
-cat("\n===== BLP results =====\n")
+cat("\n===== PESxT interaction results =====\n")
 print(res$BLP)
 
-cat("\n===== SATES results =====\n")
+cat("\n===== ATE in each subgroup =====\n")
 print(res$SATES)
 
 # ---- Optional outputs ----
@@ -613,4 +616,24 @@ if (!is.null(plot_file) && nzchar(plot_file)) {
 if (!is.null(fis_file) && nzchar(fis_file)) {
   write.table(res$FIS, fis_file, quote = FALSE, row.names = TRUE, col.names = NA)
   cat("\nFIS scores saved to:", fis_file, "\n")
+}
+
+if (!is.null(output_path) && nzchar(output_path)) {
+  blp_path   <- paste0(output_path, "PESxT.csv")
+  blp_df     <- data.frame(term = rownames(res$BLP), res$BLP, row.names = NULL, check.names = FALSE)
+  blp_df     <- blp_df[blp_df$term == "beta.2", , drop = FALSE]
+  utils::write.csv(blp_df, blp_path, row.names = FALSE)
+
+  sates_path <- paste0(output_path, "ATE_in_each_group.csv")
+  sates_df   <- data.frame(group = rownames(res$SATES), res$SATES, row.names = NULL, check.names = FALSE)
+  utils::write.csv(sates_df, sates_path, row.names = FALSE)
+
+  fis_path   <- paste0(output_path, "feature_importance.csv")
+  fis_df     <- data.frame(feature = names(res$FIS), p_value = as.numeric(res$FIS), row.names = NULL)
+  utils::write.csv(fis_df, fis_path, row.names = FALSE)
+
+  cat("\nCSV files saved:\n",
+      " - ", blp_path,  "\n",
+      " - ", sates_path,"\n",
+      " - ", fis_path,  "\n", sep = "")
 }
