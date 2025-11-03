@@ -99,6 +99,22 @@ Rscript M_Learner_I.R \
 ## 📊 Output
 
 - **Console output** — Prints tables (including estimate, confidence interval and p-value) for estimated PES-by-treatment interaction effect and average treatment effect in each subgroup
+```
+===== PESxT interaction results =====
+        Estimate  CB lower CB upper     P value
+beta.2 0.8584659 0.2170776 1.499854 0.008707927
+
+===== ATE in each subgroup =====
+        Estimate  CB lower CB upper      P value
+gamma.1 0.962239 0.3056268 1.618851 4.075618e-03
+gamma.2 1.157403 0.5087509 1.806056 4.701655e-04
+gamma.3 2.199665 1.5694140 2.829917 7.889066e-12
+
+CSV files saved:
+ - /tmp/PESxT.csv
+ - /tmp/ATE_in_each_group.csv
+ - /tmp/feature_importance.csv
+```
 
 ## 📚 Reference
 If you use ``M-Learner``, please cite
