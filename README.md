@@ -49,7 +49,7 @@ Rscript M_Learner_I.R \
 Run the following command in R to install all required dependencies:
 
 ```r
-install.packages(c("optparse", "mlr3", "mlr3learners", "sandwich", "lmtest", "ggplot2", "scales", "data.table"))
+install.packages(c("optparse", "mlr3", "mlr3learners", "sandwich", "lmtest", "ggplot2", "scales", "data.table", "e1071"))
 ```
 
 ## 📋 Input Format
