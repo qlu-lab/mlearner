@@ -35,7 +35,8 @@ Rscript M_Learner_I.R \
   --prop_learner constant \
   --base_learners svm \
   --quantile_cutoffs 0.3333,0.6667 \
-  --significance_level 0.05
+  --significance_level 0.05 \
+  --output_path /tmp/ 
 ```
 
 ## 🛠️ Installation & Setup
@@ -73,7 +74,8 @@ Rscript M_Learner_I.R \
   --quantile_cutoffs <values> \
   --significance_level <value> \
   [--plot_file <file>] \
-  [--fis_file <file>]
+  [--fis_file <file>] \
+  --output_path <value> 
 ```
 
 ### Required Arguments
@@ -87,6 +89,7 @@ Rscript M_Learner_I.R \
 - `--base_learners` — CATE learner(s), comma-separated (e.g., `svm` or `svm,ranger`)
 - `--quantile_cutoffs` — Subgroup cutoffs, comma-separated decimals (e.g., `0.3333,0.6667` for 3 groups)
 - `--significance_level` — Significance level for confidence intervals (e.g., `0.05`)
+- `--output_path` — Path prefix to save PESxT, subgroup ATE, and feature importance results in CSV format
 
 ### Optional Arguments
 
