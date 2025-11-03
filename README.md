@@ -57,8 +57,47 @@ install.packages(c("optparse", "mlr3", "mlr3learners", "sandwich", "lmtest", "gg
 All inputs must be plain `.txt` files:
 
 - **`Y.txt`** — An Nx1 treatment outcome vector (numeric). One value per line with header.
+Example:
+```
+Y
+-0.783
+1.266
+0.573
+0.905
+0.735
+-0.616
+1.038
+0.0571
+-0.591
+```
 - **`D.txt`** — An Nx1 binary treatment indicator (0/1). One number per line with header.
-- **`Z.txt`** — An NxP PRS matrix, where P is the number of PRS. Must include a header row with PRS names.
+Example:
+```
+treatment
+0
+1
+0
+0
+1
+0
+0
+0
+1
+```
+- **`prs.txt`** — An NxP PRS matrix, where P is the number of PRS. Must include a header row with PRS names.
+Example:
+```
+PRS1	PRS2	PRS3	PRS4	PRS5	PRS6
+-0.560	-0.789	0.020	-1.042	0.784	0.620
+-0.230	-0.502	0.314	-1.728	2.300	-0.758
+1.559	1.496	1.328	0.642	0.157	0.852
+0.071	-1.137	0.121	-1.529	0.047	-0.748
+0.129	-0.179	0.713	0.002	0.097	0.630
+1.715	1.902	0.779	0.250	0.070	1.097
+0.461	-0.101	0.915	0.564	-1.848	-0.988
+-1.265	-1.360	-0.574	0.189	-1.671	1.108
+-0.687	-0.665	1.627	-0.733	-0.078	-0.490
+```
 
 ## 💻 Usage
 
