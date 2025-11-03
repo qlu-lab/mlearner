@@ -95,7 +95,7 @@ Rscript M_Learner_I.R \
 
 ## 📊 Output
 
-- **Console output** — Prints tables (including estimate, confidence interval and p value) for estimated PES-by-treatment interaction effect and average treatment effect in each subgroup
+- **Console output** — Prints tables (including estimate, confidence interval and p-value) for estimated PES-by-treatment interaction effect and average treatment effect in each subgroup
 
 ## 📚 Reference
 If you use ``M-Learner``, please cite
